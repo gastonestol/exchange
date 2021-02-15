@@ -1,0 +1,10 @@
+plugins {
+    id 'java-library'
+}
+
+version=1.0
+
+dependencies {
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+    compileOnly 'org.projectlombok:lombok:1.18.16'
+}

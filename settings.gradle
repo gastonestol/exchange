@@ -1,0 +1,5 @@
+//This is the Gradle settings file
+//If you add a module to the project, you need to mention it here
+//so it's part of the build
+include 'service', 'model'
+include 'model-ram'

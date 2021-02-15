@@ -1,0 +1,65 @@
+Coding challenge for Java Senior Developers
+
+This application consists of the following:
+
+* model - A library with some model definitions as well as entity
+  objects to handle users and orders (just the interfaces)
+* model-ram - A RAM-based implementation of the models, using Lists and Maps.
+* service - A REST-based service to submit orders and query them.
+
+The project is built with Java 15.
+
+You can build the whole project with Gradle, and you can create the necessary
+files for editing it with IDEA just by typing `./gradlew idea`. If you prefer
+Eclipse then you can run `./gradlew eclipse` and it will create the necessary
+`.classpath` and `.project` files.
+
+If you prefer Maven, you can run the command `./gradlew poms` to generate POM
+files; these will be useful for compiling the project but they won't run
+the tests, you will need to manually add the GMavenPlus plugin, or you can
+simply run the tests from Gradle with `./gradlew test`.
+
+Please provide any instructions you consider to help the reviewer.
+
+THE CHALLENGE
+
+The challenge consists of completing as many of the following steps as possible:
+
+1. Init the project as a Git repo. Please do not share this challenge in public
+   Git services such as GitHub, GitLab or BitBucket. Please use Git to track
+   your changes and to help the reviewer follow your progress and thought process.
+2. Implement the `findOrdersForBook` method in the OrderModel implementation.
+   After this, the service tests should pass.
+3. The query endpoint in the OrderController is wrong: it only receives one
+   currency and it should receive two (major and minor). Modify the endpoint
+   and all necessary components accordingly. You will need to modify the
+   corresponding test as well.
+4. Create a new library named model-db, and implement the order and user
+   model interfaces using the relational database of your choosing.
+   Feel free to use the tech stack you are most comfortable with.
+   The goal is to replace the model-ram library in the service with
+   your own, so that the service can now use persistent storage.
+5. In case you haven't noticed, there's no authentication... you need
+   to add an authentication scheme to some of the endpoints to achieve
+   the following:
+   5.1. Submitting an order cannot be done on behalf of someone else
+   5.2. A user can only query their own orders
+   5.3. A user can query any order by ID but if it wasn't submitted by
+        them then the userId must be deleted from the result
+   5.4. Querying books is a public method but the userID's need to be
+        anonymized.
+6. Now that you have familiarized yourself with this small codebase,
+   did you notice any design flaws? Would you change anything, and why?
+
+Please initialize the directory with the challenge as a git repo so you can
+commit your changes as you go along. This will help you go back in case you
+mess things up badly, and it will also help us look at your progress in
+chronological order.
+
+The expected minimum is that you complete steps 1, 2 and 3 correctly, then
+either step 4 or step 5 (of course, if you can solve both that's a big extra)
+to the best of your abilities, and give us your feedback on step 6.
+
+Please submit the solved challenge via email, in a zipped file similar
+to how you received it. Please do not upload your solution to a public
+service such as github, bitbucket, gitlab, etc.
