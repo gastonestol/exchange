@@ -67,7 +67,7 @@ class TestController extends Specification {
 
     void "other queries"() {
         when:
-            List<Map<String, Object>> resp = rest.getForEntity("http://localhost:${ port }/query/1/active/btc", List).body
+            List<Map<String, Object>> resp = rest.getForEntity("http://localhost:${ port }/query/1/active/btc/mxn", List).body
         then:
             resp != null
             resp.size() >= 2
