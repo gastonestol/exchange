@@ -19,11 +19,11 @@ class OrderModelSpec extends Specification {
         model.submit(new Order(userId: 3, major: 'eth', minor: 'mxn',
                 amount:0.00001, price: 12_000.00))
         expect: "orders by user work"
-            model.findOrdersForUser(1, Order.Status.active, Currency.btc).size() == 1
-            model.findOrdersForUser(2, Order.Status.active, Currency.btc).size() == 1
-            model.findOrdersForUser(3, Order.Status.active, Currency.eth).size() == 1
-            model.findOrdersForUser(3, Order.Status.active, Currency.ltc).empty
-            model.findOrdersForUser(3, Order.Status.complete, Currency.eth).empty
+            model.findOrdersForUser(1, Order.Status.active, Currency.btc, Currency.mxn).size() == 1
+            model.findOrdersForUser(2, Order.Status.active, Currency.btc, Currency.mxn).size() == 1
+            model.findOrdersForUser(3, Order.Status.active, Currency.eth, Currency.mxn).size() == 1
+            model.findOrdersForUser(3, Order.Status.active, Currency.ltc, null).empty
+            model.findOrdersForUser(3, Order.Status.complete, Currency.eth, null).empty
         and: "orders by book work"
             model.findOrdersForBook(Currency.btc, Currency.mxn).size() == 2
             model.findOrdersForBook(Currency.eth, Currency.mxn).size() == 1

@@ -51,15 +51,17 @@ public class OrderController {
         return orderModel.findOrdersForBook(maj, min);
     }
 
-    @RequestMapping("/query/{userId}/{status}/{currency}")
+    @RequestMapping("/query/{userId}/{status}/{major}/{minor}")
     public List<Order> getBy(@PathVariable long userId,
                              @PathVariable String status,
-                             @PathVariable String currency) {
+                             @PathVariable String major,
+                             @PathVariable String minor) {
         Order.Status st = orderStatus(status);
-        Currency curr = checkCurrency(currency);
+        Currency majorCurr = checkCurrency(major);
+        Currency minorCurr = checkCurrency(minor);
 
-        List<Order> r = orderModel.findOrdersForUser(userId, st, curr);
-        log.debug("Query {}/{}/{} returns {} orders", userId, st, curr, r.size());
+        List<Order> r = orderModel.findOrdersForUser(userId, st, majorCurr, minorCurr);
+        log.debug("Query {}/{}/{}/{} returns {} orders", userId, st, majorCurr, minorCurr, r.size());
         return r;
     }
 

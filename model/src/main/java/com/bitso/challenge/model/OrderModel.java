@@ -18,7 +18,7 @@ public interface OrderModel {
      * @param userId mandatory ID of the user whose orders you want.
      * @param status optional status of the orders for the user.
      * @param currency optional currency of the orders for the user. */
-    List<Order> findOrdersForUser(long userId, Order.Status status, Currency currency);
+    List<Order> findOrdersForUser(long userId, Order.Status status, Currency major, Currency minor);
     List<Order> findOrdersForBook(Currency major, Currency minor);
 
     /** Inserts an order, assigning a new ID but leaving everything else as is. */
