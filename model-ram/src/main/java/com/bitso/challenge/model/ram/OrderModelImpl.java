@@ -51,7 +51,7 @@ public class OrderModelImpl implements OrderModel {
     @Override
     public List<Order> findOrdersForBook(Currency major, Currency minor) {
         return orders.values().stream()
-                .filter(order -> major == order.getMajor() || minor == order.getMinor())
+                .filter(order -> major == order.getMajor() && minor == order.getMinor())
                 .collect(Collectors.toList());
     }
 }

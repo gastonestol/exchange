@@ -55,10 +55,18 @@ public class OrderController {
     public List<Order> getBy(@PathVariable long userId,
                              @PathVariable String status,
                              @PathVariable String currency) {
-        Order.Status st = status == null || status.isEmpty() ? null : Order.Status.valueOf(status);
-        Currency curr = currency == null || currency.isEmpty() ? null : Currency.valueOf(currency);
+        Order.Status st = orderStatus(status);
+        Currency curr = checkCurrency(currency);
+
         List<Order> r = orderModel.findOrdersForUser(userId, st, curr);
         log.debug("Query {}/{}/{} returns {} orders", userId, st, curr, r.size());
         return r;
+    }
+
+    private Currency checkCurrency(String currency){
+        return currency == null || currency.isEmpty() ? null : Currency.valueOf(currency);
+    }
+    private Order.Status orderStatus(String status){
+        return status == null || status.isEmpty() ? null : Order.Status.valueOf(status);
     }
 }
