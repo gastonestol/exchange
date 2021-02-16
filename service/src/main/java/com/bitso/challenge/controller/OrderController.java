@@ -1,11 +1,15 @@
-package com.bitso.challenge.db.service;
+package com.bitso.challenge.controller;
 
-import com.bitso.challenge.db.entity.Currency;
-import com.bitso.challenge.db.entity.Order;
-import com.bitso.challenge.db.OrderModel;
-import com.bitso.challenge.db.UserModel;
+import com.bitso.challenge.model.entity.Currency;
+import com.bitso.challenge.model.entity.Order;
+import com.bitso.challenge.model.OrderModel;
+import com.bitso.challenge.model.UserModel;
+import com.bitso.challenge.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
@@ -20,15 +24,14 @@ public class OrderController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Inject
-    private OrderModel orderModel;
-    @Inject
-    private UserModel userModel;
+    @Autowired
+    private OrderService orderService;
+
 
     @RequestMapping("/get/{id}")
     @ResponseBody
     public Optional<Order> get(@PathVariable long id) {
-        Optional<Order> order = orderModel.get(id);
+        Optional<Order> order = orderService.get(id);
         order.ifPresentOrElse(
                 o -> log.debug("get {}: {}", id, o),
                 () -> log.debug("get {}: null", id));
@@ -36,9 +39,9 @@ public class OrderController {
     }
 
     @RequestMapping("/submit") @PostMapping
-    public Order submit(Order order) {
+    public Order submit(@RequestBody Order order) {
         log.debug("Submitting order {}", order);
-        orderModel.submit(order);
+        orderService.submit(order);
         return order;
     }
 
@@ -48,19 +51,19 @@ public class OrderController {
         //TODO validate currencies
         var maj = Currency.valueOf(major);
         var min = Currency.valueOf(minor);
-        return orderModel.findOrdersForBook(maj, min);
+        return orderService.findOrdersForBook(maj, min);
     }
 
     @RequestMapping("/query/{userId}/{status}/{major}/{minor}")
     public List<Order> getBy(@PathVariable long userId,
                              @PathVariable String status,
                              @PathVariable String major,
-                             @PathVariable String minor) {
+                             @PathVariable String minor ) {
         Order.Status st = orderStatus(status);
         Currency majorCurr = checkCurrency(major);
         Currency minorCurr = checkCurrency(minor);
 
-        List<Order> r = orderModel.findOrdersForUser(userId, st, majorCurr, minorCurr);
+        List<Order> r = orderService.findOrdersForUser(userId, st, majorCurr, minorCurr);
         log.debug("Query {}/{}/{}/{} returns {} orders", userId, st, majorCurr, minorCurr, r.size());
         return r;
     }

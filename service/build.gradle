@@ -20,6 +20,11 @@ dependencies {
     implementation project(':model'), project(':model-db'),
         'javax.inject:javax.inject:1',
         'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.2'
+    implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.1.1.RELEASE'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.12.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.12.1'
+
     testImplementation 'org.codehaus.groovy:groovy:3.0.6',
         'org.springframework.boot:spring-boot-starter-test',
         'org.springframework.boot:spring-boot-starter-webflux',
@@ -29,6 +34,7 @@ dependencies {
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
     compile group: 'org.sql2o', name: 'sql2o', version: '1.6.0'
+
     runtimeOnly "org.postgresql:postgresql:42.2.18"
 }
 

@@ -1,6 +1,7 @@
 package com.bitso.challenge.db;
 
-import com.bitso.challenge.db.entity.User;
+import com.bitso.challenge.model.UserModel;
+import com.bitso.challenge.model.entity.User;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 
@@ -23,6 +24,16 @@ public class UserModelImpl implements UserModel {
         try (Connection conn = sql2o.open()) {
             User user = conn.createQuery("select * from users where id = :id")
                     .addParameter("id", id)
+                    .executeAndFetchFirst(User.class);
+            return Optional.ofNullable(user);
+        }
+    }
+
+    @Override
+    public Optional<User> get(String email) {
+        try (Connection conn = sql2o.open()) {
+            User user = conn.createQuery("select * from users where email = :email")
+                    .addParameter("email", email)
                     .executeAndFetchFirst(User.class);
             return Optional.ofNullable(user);
         }

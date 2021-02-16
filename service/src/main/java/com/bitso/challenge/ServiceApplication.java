@@ -1,16 +1,24 @@
-package com.bitso.challenge.db.service;
+package com.bitso.challenge;
 
 import com.bitso.challenge.db.OrderModelImpl;
 import com.bitso.challenge.db.UserModelImpl;
-import com.bitso.challenge.db.entity.Currency;
-import com.bitso.challenge.db.entity.Order;
-import com.bitso.challenge.db.entity.User;
-import com.bitso.challenge.db.UserModel;
-import com.bitso.challenge.db.OrderModel;
+import com.bitso.challenge.model.entity.Currency;
+import com.bitso.challenge.model.entity.Order;
+import com.bitso.challenge.model.entity.User;
+import com.bitso.challenge.model.UserModel;
+import com.bitso.challenge.model.OrderModel;
+import com.bitso.challenge.security.jwt.AuthProvider;
+import com.bitso.challenge.service.PasswordService;
+import com.bitso.challenge.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -29,6 +37,9 @@ public class ServiceApplication {
     @Value("${db.conn.string}")
     private String connStr;
 
+    @Autowired
+    PasswordService passwordService;
+
     @Bean
     public UserModel userModel() {
         UserModelImpl um = new UserModelImpl(connStr);
@@ -37,7 +48,7 @@ public class ServiceApplication {
             User u = new User();
             u.setId(id);
             u.setEmail("user" + id + "@bitso.com");
-            u.setPassword("password" + id);
+            u.setPassword(passwordService.hashPassword("password" + id));
             um.add(u);
         });
         return um;
@@ -61,6 +72,10 @@ public class ServiceApplication {
             return order;
         }).forEach(om::insert);
         return om;
+    }
+    @Bean
+    public PasswordEncoder encoder() {
+        return new BCryptPasswordEncoder();
     }
 
     public static void main(String[] args) {

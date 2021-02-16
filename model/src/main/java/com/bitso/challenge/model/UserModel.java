@@ -1,6 +1,6 @@
-package com.bitso.challenge.db;
+package com.bitso.challenge.model;
 
-import com.bitso.challenge.db.entity.User;
+import com.bitso.challenge.model.entity.User;
 
 import java.util.Optional;
 
@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface UserModel {
 
     Optional<User> get(long id);
+    Optional<User> get(String email);
+
 }

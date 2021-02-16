@@ -1,7 +1,7 @@
-package com.bitso.challenge.db;
+package com.bitso.challenge.model;
 
-import com.bitso.challenge.db.entity.Currency;
-import com.bitso.challenge.db.entity.Order;
+import com.bitso.challenge.model.entity.Currency;
+import com.bitso.challenge.model.entity.Order;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,7 +1,8 @@
 package com.bitso.challenge.db;
 
-import com.bitso.challenge.db.entity.Currency;
-import com.bitso.challenge.db.entity.Order;
+import com.bitso.challenge.model.OrderModel;
+import com.bitso.challenge.model.entity.Currency;
+import com.bitso.challenge.model.entity.Order;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
 

@@ -1,4 +1,4 @@
-package com.bitso.challenge.db.entity;
+package com.bitso.challenge.model.entity;
 
 /**
  * The currencies in the system.
