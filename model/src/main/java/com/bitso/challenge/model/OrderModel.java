@@ -12,15 +12,15 @@ import java.util.Optional;
 public interface OrderModel {
 
     /** Inserts an order, assigning a new ID, a status of 'active', and setting its creation date. */
-    long submit(Order order);
-    Optional<Order> get(long id);
+    Long submit(Order order);
+    Optional<Order> get(Long id);
     /** Fetch the orders for the specified userId.
      * @param userId mandatory ID of the user whose orders you want.
      * @param status optional status of the orders for the user.
      * @param currency optional currency of the orders for the user. */
-    List<Order> findOrdersForUser(long userId, Order.Status status, Currency major, Currency minor);
+    List<Order> findOrdersForUser(Long userId, Order.Status status, Currency major, Currency minor);
     List<Order> findOrdersForBook(Currency major, Currency minor);
 
     /** Inserts an order, assigning a new ID but leaving everything else as is. */
-    long insert(Order order);
+    Long insert(Order order);
 }

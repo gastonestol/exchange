@@ -20,7 +20,7 @@ public class UserModelImpl implements UserModel {
 
 
     @Override
-    public Optional<User> get(long id) {
+    public Optional<User> get(Long id) {
         try (Connection conn = sql2o.open()) {
             User user = conn.createQuery("select * from users where id = :id")
                     .addParameter("id", id)

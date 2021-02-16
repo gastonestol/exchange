@@ -18,8 +18,8 @@ public class Order {
         complete,
     }
 
-    private long id;
-    private long userId;
+    private Long id;
+    private Long userId;
     private Status status;
     private Date created;
     private Currency major;

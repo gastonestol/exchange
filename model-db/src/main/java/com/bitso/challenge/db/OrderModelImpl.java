@@ -20,14 +20,14 @@ public class OrderModelImpl implements OrderModel {
     }
 
     @Override
-    public long submit(Order order) {
+    public Long submit(Order order) {
         order.setCreated(new Date());
         order.setStatus(Order.Status.active);
         insert(order);
         return order.getId();
     }
 
-    public long insert(Order order) {
+    public Long insert(Order order) {
         //TODO validate
         try (Connection conn = sql2o.open()) {
             Long id = conn.createQuery("insert into orders " +
@@ -49,7 +49,7 @@ public class OrderModelImpl implements OrderModel {
     }
 
     @Override
-    public Optional<Order> get(long id) {
+    public Optional<Order> get(Long id) {
         try (Connection conn = sql2o.open()) {
             Order order = conn.createQuery("select * from orders where id = :id")
                     .addParameter("id", id)
@@ -60,7 +60,7 @@ public class OrderModelImpl implements OrderModel {
     }
 
     @Override
-    public List<Order> findOrdersForUser(long userId, Order.Status status, Currency major, Currency minor) {
+    public List<Order> findOrdersForUser(Long userId, Order.Status status, Currency major, Currency minor) {
         try (Connection conn = sql2o.open()) {
             List<Order> orders = conn.createQuery("select * from orders " +
                     "where user_id = :userId " +

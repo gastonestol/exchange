@@ -32,7 +32,7 @@ class OrderControllerTests extends Specification {
     RestTemplate rest = new RestTemplate()
 
 
-    Map<String, Object> submit(String token,long userId, String major, String minor, BigDecimal amount, BigDecimal price, boolean buy) {
+    Map<String, Object> submit(String token,Long userId, String major, String minor, BigDecimal amount, BigDecimal price, boolean buy) {
         HttpHeaders headers = new HttpHeaders()
         headers.setContentType(MediaType.APPLICATION_JSON)
         headers.setBearerAuth(transformToken(token))
@@ -85,14 +85,23 @@ class OrderControllerTests extends Specification {
         then:
             resp != null
             resp.size() >= 2
+            resp.get(0).getAt("userId") == null
     }
 
     void "other queries"() {
+        given:
+            String email = "user2@bitso.com"
+            String password = "password2"
+            ResponseEntity loginResp = login(email, password)
+            String token = loginResp.getHeaders().get("Authorization")
+            Long id = (Long) loginResp.getBody().get("id")
         when:
-            List<Map<String, Object>> resp = rest.getForEntity("http://localhost:${ port }/query/1/active/btc/mxn", List).body
+            HttpHeaders headers = new HttpHeaders()
+            headers.setBearerAuth(transformToken(token))
+            List<Map<String, Object>> resp = rest.exchange("http://localhost:${ port }/query/${id}/active/btc/mxn",HttpMethod.GET,new HttpEntity(headers), List).body
         then:
             resp != null
-            resp.size() >= 2
+            resp.size() == 1
     }
 
     private static String transformToken(String token){

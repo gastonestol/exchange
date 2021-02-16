@@ -9,7 +9,7 @@ import java.util.Optional;
  */
 public interface UserModel {
 
-    Optional<User> get(long id);
+    Optional<User> get(Long id);
     Optional<User> get(String email);
 
 }

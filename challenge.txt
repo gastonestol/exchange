@@ -52,7 +52,7 @@ The challenge consists of completing as many of the following steps as possible:
    did you notice any design flaws? Would you change anything, and why?
 
 Please initialize the directory with the challenge as a git repo so you can
-commit your changes as you go along. This will help you go back in case you
+commit your changes as you go aLong. This will help you go back in case you
 mess things up badly, and it will also help us look at your progress in
 chronological order.
 
