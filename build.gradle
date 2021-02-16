@@ -48,7 +48,8 @@ task poms {
             packaging 'pom'
             modules {
                 module 'model'
-                module 'model-ram'
+               // module 'model-ram'
+                module 'model-db'
                 module 'service'
             }
         }

@@ -1,0 +1,18 @@
+plugins {
+    id 'java-library'
+    id 'groovy'
+}
+
+version=1.1
+
+dependencies {
+    api project(':model')
+    testImplementation 'org.codehaus.groovy:groovy:3.0.6',
+        'org.spockframework:spock-core:2.0-M4-groovy-3.0'
+    testImplementation group: 'org.hsqldb', name: 'hsqldb', version: '2.5.1'
+    compile group: 'org.sql2o', name: 'sql2o', version: '1.6.0'
+}
+
+test {
+    useJUnitPlatform()
+}
