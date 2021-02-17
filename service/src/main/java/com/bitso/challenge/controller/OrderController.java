@@ -2,20 +2,14 @@ package com.bitso.challenge.controller;
 
 import com.bitso.challenge.model.entity.Currency;
 import com.bitso.challenge.model.entity.Order;
-import com.bitso.challenge.model.OrderModel;
-import com.bitso.challenge.model.UserModel;
 import com.bitso.challenge.security.model.UserPrincipal;
 import com.bitso.challenge.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
