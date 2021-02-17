@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.*
 import org.springframework.test.context.TestPropertySource
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
@@ -44,16 +45,14 @@ class UserControllerTests extends Specification {
         resp.headers.get("Authorization") != null
     }
 
-    /*void "given an non existing user when login then return forbidden"() {
+    void "given an non existing user when login then return forbidden"() {
         given:
         def email = "nonexiting@bitso.com"
         def password = "password1"
         when:
-        ResponseEntity resp = login(email, password)
+        login(email, password)
         then:
-        resp != null
-        resp.statusCode == HttpStatus.FORBIDDEN
-        resp.headers.get("Authorization") == null
+        thrown HttpClientErrorException.Forbidden
     }
 
     void "given an existing user and incorrect password when login then return forbidden"() {
@@ -61,10 +60,9 @@ class UserControllerTests extends Specification {
         def email = "user1@bitso.com"
         def password = "password12"
         when:
-        ResponseEntity resp = login(email, password)
+        login(email, password)
         then:
-        resp != null
-        resp.statusCode == HttpStatus.FORBIDDEN
-        resp.headers.get("Authorization") == null
-    }*/
+        thrown HttpClientErrorException.Forbidden
+
+    }
 }

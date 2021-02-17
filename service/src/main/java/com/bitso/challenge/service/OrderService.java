@@ -1,13 +1,11 @@
 package com.bitso.challenge.service;
 
 import com.bitso.challenge.model.OrderModel;
-import com.bitso.challenge.model.UserModel;
 import com.bitso.challenge.model.entity.Currency;
 import com.bitso.challenge.model.entity.Order;
 import com.bitso.challenge.security.model.UserPrincipal;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -17,6 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
+
     @Inject
     private OrderModel orderModel;
 

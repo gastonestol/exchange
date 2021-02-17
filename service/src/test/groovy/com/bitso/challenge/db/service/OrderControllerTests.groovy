@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.test.context.TestPropertySource
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
+import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.RestTemplate
 import spock.lang.Specification
 
@@ -79,16 +80,55 @@ class OrderControllerTests extends Specification {
             resp2 == resp
     }
 
-    void "given major and minor when quering books in public then books are retrieved"() {
+    void "given an order data when submitting and getting from other user then order is retrieved with anonymized userIds"() {
+        given:
+        String email = "user1@bitso.com"
+        String password = "password1"
+        ResponseEntity loginResp = login(email, password)
+        String token = loginResp.getHeaders().get("Authorization")
+        Long id = (Long) loginResp.getBody().get("id")
+        when:
+        Map<String, Object> resp = submit(token,id, 'btc', 'mxn', 1.0, 380_000.00, true)
+        then:
+        resp != null
+        resp.id != null
+        Long.parseLong(resp.id.toString()) > 0
+        resp.status == 'active'
+        resp.created != null
+        when:
+        HttpHeaders headers = new HttpHeaders()
+        headers.setBearerAuth(transformToken(token))
+        Map<String, Object> resp2 = rest.exchange("http://localhost:${ port }/get/1",HttpMethod.GET,new HttpEntity(headers), Map).body
+        then:
+        resp2 != null
+        resp2.getAt("userId") == null
+    }
+
+    void "given an order data when submitting on behalf of other user then forbbiden"() {
+        given:
+        String email = "user1@bitso.com"
+        String password = "password1"
+        ResponseEntity loginResp = login(email, password)
+        String token = loginResp.getHeaders().get("Authorization")
+        when:
+        submit(token,1, 'btc', 'mxn', 1.0, 380_000.00, true)
+        then:
+        thrown HttpClientErrorException.Forbidden
+    }
+
+    void "given major and minor when quering books in public then orders are retrieved with anonymized userIds"() {
         when:
             List<Map<String, Object>> resp = rest.getForEntity("http://localhost:${ port }/book/btc/mxn", List).body
         then:
             resp != null
             resp.size() >= 2
-            resp.get(0).getAt("userId") == null
+        resp.forEach(t ->{
+            t.getAt("userId") == null
+        })
+
     }
 
-    void "other queries"() {
+    void "given query data when authenticating and quering then orders are retrieved"() {
         given:
             String email = "user2@bitso.com"
             String password = "password2"
@@ -102,6 +142,14 @@ class OrderControllerTests extends Specification {
         then:
             resp != null
             resp.size() == 1
+            resp.get(0).getAt("userId") != null
+    }
+
+    void "given query data when quering without authorization forbbiden"() {
+        when:
+        rest.getForEntity("http://localhost:${ port }/query/1/active/btc/mxn", List).body
+        then:
+        thrown HttpClientErrorException.Forbidden
     }
 
     private static String transformToken(String token){
