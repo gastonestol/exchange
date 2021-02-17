@@ -24,6 +24,7 @@ import javax.inject.Inject
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(locations = ["classpath:application-test.properties"])
 class OrderControllerTests extends Specification {
+
     private static final String TOKEN_PREFIX = "Bearer";
 
     @Inject
