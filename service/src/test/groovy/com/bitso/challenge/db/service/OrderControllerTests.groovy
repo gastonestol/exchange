@@ -146,6 +146,33 @@ class OrderControllerTests extends Specification {
             resp.get(0).getAt("userId") != null
     }
 
+    void "given query data when authenticating and quering other users orders then forbidden action not allowed"() {
+        given:
+        String email = "user2@bitso.com"
+        String password = "password2"
+        ResponseEntity loginResp = login(email, password)
+        String token = loginResp.getHeaders().get("Authorization")
+        Long id = (Long) loginResp.getBody().get("id")
+        when:
+        HttpHeaders headers = new HttpHeaders()
+        headers.setBearerAuth(transformToken(token))
+        rest.exchange("http://localhost:${ port }/query/2/active/btc/mxn",HttpMethod.GET,new HttpEntity(headers), List).body
+        then:
+        thrown HttpClientErrorException.Forbidden
+
+    }
+
+    void "given query data when quering with incorrect token then conflict"() {
+        given:
+        String token = "test"
+        when:
+        HttpHeaders headers = new HttpHeaders()
+        headers.setBearerAuth(transformToken(token))
+        rest.exchange("http://localhost:${ port }/query/1/active/btc/mxn",HttpMethod.GET,new HttpEntity(headers), List).body
+        then:
+        thrown HttpClientErrorException.Conflict
+    }
+
     void "given query data when quering without authorization forbbiden"() {
         when:
         rest.getForEntity("http://localhost:${ port }/query/1/active/btc/mxn", List).body

@@ -45,24 +45,25 @@ class UserControllerTests extends Specification {
         resp.headers.get("Authorization") != null
     }
 
-    void "given an non existing user when login then return forbidden"() {
+    void "given an non existing user when login then return Unauthorized"() {
         given:
         def email = "nonexiting@bitso.com"
         def password = "password1"
         when:
         login(email, password)
         then:
-        thrown HttpClientErrorException.Forbidden
+        thrown HttpClientErrorException.Unauthorized
     }
 
-    void "given an existing user and incorrect password when login then return forbidden"() {
+    void "given an existing user and incorrect password when login then return Unauthorized"() {
         given:
         def email = "user1@bitso.com"
         def password = "password12"
         when:
         login(email, password)
         then:
-        thrown HttpClientErrorException.Forbidden
+        thrown HttpClientErrorException.Unauthorized
 
     }
+
 }

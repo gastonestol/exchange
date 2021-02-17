@@ -1,11 +1,13 @@
 package com.bitso.challenge.service;
 
+import com.bitso.challenge.exception.NotAllowedException;
 import com.bitso.challenge.model.OrderModel;
 import com.bitso.challenge.model.entity.Currency;
 import com.bitso.challenge.model.entity.Order;
 import com.bitso.challenge.security.model.UserPrincipal;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.MethodNotAllowedException;
 
 import javax.inject.Inject;
 import java.util.Collections;
@@ -23,7 +25,7 @@ public class OrderService {
         if(order.getUserId().equals(userPrincipal.getId())) {
             return orderModel.submit(order);
         }else {
-            throw new BadCredentialsException("Order userId do not match with logged user Id");
+            throw new NotAllowedException("Order userId do not match with logged user Id");
         }
     }
     public Optional<Order> get(Long id, UserPrincipal userPrincipal){
@@ -39,7 +41,7 @@ public class OrderService {
         if(userId.equals(userPrincipal.getId())) {
             return orderModel.findOrdersForUser(userId, status, major, minor);
         }else{
-            return Collections.emptyList();
+            throw new NotAllowedException("An user can only query it's own orders");
         }
 
     }

@@ -16,13 +16,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 @RestController("users")
-public class UserController {
+public class UserController extends ResponseEntityExceptionHandler{
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

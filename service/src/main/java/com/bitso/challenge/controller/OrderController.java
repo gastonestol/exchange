@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import java.util.Optional;
  * REST endpoint to submit and query orders.
  */
 @RestController("orders")
-public class OrderController {
+public class OrderController extends ResponseEntityExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
